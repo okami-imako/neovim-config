@@ -112,6 +112,8 @@ vim.opt.clipboard = "unnamedplus"
 -- Enable break indent
 vim.opt.breakindent = true
 
+vim.opt.wrap = false
+
 -- Save undo history
 vim.opt.undofile = true
 
@@ -166,7 +168,7 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "120"
 
 vim.g.AutoPairsCenterLine = false
 
@@ -191,6 +193,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+vim.keymap.set("x", "<leader>p", [["_dP]])
 -- vim.keymap.set("n", "<leader>y", '"+y')
 -- vim.keymap.set("v", "<leader>y", '"+y')
 -- vim.keymap.set("n", "<leader>Y", '"+Y')
