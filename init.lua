@@ -101,8 +101,7 @@ vim.g.have_nerd_font = true
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
 
--- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
+-- Don't show the mode, since it's already in the status line vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -242,7 +241,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -357,6 +355,10 @@ require("lazy").setup({
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+			"jonarrien/telescope-cmdline.nvim",
+		},
+		keys = {
+			{ "<leader>:", "<cmd>Telescope cmdline<cr>", desc = "Cmdline" },
 		},
 		config = function()
 			-- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -391,6 +393,19 @@ require("lazy").setup({
 				-- },
 				-- pickers = {}
 				extensions = {
+					cmdline = {
+						picker = {
+							layout_config = {
+								width = 120,
+								height = 25,
+							},
+						},
+						mappings = {
+							complete = "<C-y>",
+							run_selection = "<C-CR>",
+							run_input = "<CR>",
+						},
+					},
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
 					},
@@ -400,6 +415,7 @@ require("lazy").setup({
 			-- Enable Telescope extensions if they are installed
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
+			pcall(require("telescope").load_extension, "cmdline")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
