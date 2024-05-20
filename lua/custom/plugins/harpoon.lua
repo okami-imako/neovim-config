@@ -16,8 +16,5 @@ return {
 		vim.keymap.set("n", "<C-C>", function()
 			ui.nav_file(3)
 		end)
-		vim.keymap.set("n", "<C-X>", function()
-			ui.nav_file(4)
-		end)
 	end,
 }
