@@ -6,7 +6,7 @@ local opts = {
 		-- go
 		null_ls.builtins.formatting.gofmt,
 		null_ls.builtins.formatting.goimports_reviser,
-		null_ls.builtins.formatting.golines,
+		-- null_ls.builtins.formatting.golines,
 
 		-- lua
 		null_ls.builtins.formatting.stylua,

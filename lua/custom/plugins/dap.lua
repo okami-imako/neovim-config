@@ -1,58 +1,57 @@
 return {
 	"mfussenegger/nvim-dap",
+	dependencies = {
+		"leoluz/nvim-dap-go",
+		"rcarriga/nvim-dap-ui",
+		"theHamsta/nvim-dap-virtual-text",
+		"nvim-neotest/nvim-nio",
+		"williamboman/mason.nvim",
+	},
 	config = function()
 		local dap = require("dap")
-		local dap_widgets = require("dap.ui.widgets")
-		vim.keymap.set("n", "<F5>", function()
-			dap.continue()
-		end)
-		vim.keymap.set("n", "<F8>", function()
-			dap.step_over()
-		end)
-		vim.keymap.set("n", "<F7>", function()
-			dap.step_into()
-		end)
-		vim.keymap.set("n", "<leader>b", function()
-			dap.toggle_breakpoint()
-		end)
-		vim.keymap.set("n", "<leader>B", function()
-			dap.set_breakpoint()
-		end)
-		vim.keymap.set("n", "<Leader>cb", function()
-			dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-		end)
-		vim.keymap.set("n", "<Leader>lp", function()
-			dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-		end)
-		vim.keymap.set("n", "<Leader>dr", function()
-			dap.repl.open()
-		end)
-		vim.keymap.set("n", "<Leader>dl", function()
-			dap.run_last()
-		end)
-		vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
-			dap_widgets.hover()
-		end)
-		vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
-			dap_widgets.preview()
-		end)
-		vim.keymap.set("n", "<Leader>df", function()
-			dap_widgets.centered_float(dap_widgets.frames)
-		end)
-		vim.keymap.set("n", "<Leader>ds", function()
-			dap_widgets.centered_float(dap_widgets.scopes)
+		local ui = require("dapui")
+
+		require("dapui").setup()
+		require("dap-go").setup()
+
+		require("nvim-dap-virtual-text").setup()
+
+		-- Handled by nvim-dap-go
+		-- dap.adapters.go = {
+		--   type = "server",
+		--   port = "${port}",
+		--   executable = {
+		--     command = "dlv",
+		--     args = { "dap", "-l", "127.0.0.1:${port}" },
+		--   },
+		-- }
+
+		vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
+		vim.keymap.set("n", "<leader>gb", dap.run_to_cursor)
+
+		-- Eval var under cursor
+		vim.keymap.set("n", "<leader>?", function()
+			require("dapui").eval(nil, { enter = true })
 		end)
 
-		vim.api.nvim_set_hl(0, "red", { fg = "#ff4500" })
-		vim.api.nvim_set_hl(0, "blue", { fg = "#00ffff" })
-		vim.api.nvim_set_hl(0, "green", { fg = "#9ece6a" })
-		vim.api.nvim_set_hl(0, "yellow", { fg = "#FFFF00" })
-		vim.api.nvim_set_hl(0, "orange", { fg = "#f09000" })
+		vim.keymap.set("n", "<F1>", dap.continue)
+		vim.keymap.set("n", "<F2>", dap.step_into)
+		vim.keymap.set("n", "<F3>", dap.step_over)
+		vim.keymap.set("n", "<F4>", dap.step_out)
+		vim.keymap.set("n", "<F5>", dap.step_back)
+		vim.keymap.set("n", "<F13>", dap.restart)
 
-		vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "red" })
-		vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "blue" })
-		vim.fn.sign_define("DapLogPoint", { text = "", texthl = "yellow" })
-		vim.fn.sign_define("DapStopped", { text = "", texthl = "green" })
-		vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "orange" })
+		dap.listeners.before.attach.dapui_config = function()
+			ui.open()
+		end
+		dap.listeners.before.launch.dapui_config = function()
+			ui.open()
+		end
+		dap.listeners.before.event_terminated.dapui_config = function()
+			ui.close()
+		end
+		dap.listeners.before.event_exited.dapui_config = function()
+			ui.close()
+		end
 	end,
 }

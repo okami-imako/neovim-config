@@ -8,6 +8,12 @@ return { -- You can easily change to a different colorscheme.
 	priority = 1000, -- Make sure to load this before all the other start plugins.
 	config = function()
 		require("catppuccin").setup({
+			flavour = "macchiato",
+			color_overrides = {
+				all = {
+					mantle = "#24273a",
+				},
+			},
 			integrations = {
 				dap = true,
 				dap_ui = true,
@@ -23,7 +29,7 @@ return { -- You can easily change to a different colorscheme.
 		-- Load the colorscheme here.
 		-- Like many other themes, this one has different styles, and you could load
 		-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-		vim.cmd.colorscheme("catppuccin-macchiato")
+		vim.cmd.colorscheme("catppuccin")
 
 		-- You can configure highlights by doing something like:
 		vim.cmd.hi("Comment gui=none")
