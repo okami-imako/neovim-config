@@ -2,10 +2,6 @@ local set = vim.keymap.set
 
 set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
--- ThePrimeagen remaps
-
--- set("n", "-", vim.cmd.Ex)
-
 set("v", "J", ":m '>+1<CR>gv=gv")
 set("v", "K", ":m '<-2<CR>gv=gv")
 
@@ -31,6 +27,22 @@ set("n", "H", "^")
 set("n", "L", "$")
 set("v", "H", "^")
 set("v", "L", "$")
+
+set({ "i", "s" }, "<C-l>", function()
+	if vim.snippet.active({ direction = 1 }) then
+		return "<cmd>lua vim.snippet.jump(1)<cr>"
+	else
+		return "<C-l>"
+	end
+end, { expr = true })
+
+set({ "i", "s" }, "<C-h>", function()
+	if vim.snippet.active({ direction = -1 }) then
+		return "<cmd>lua vim.snippet.jump(-1)<cr>"
+	else
+		return "<C-h>"
+	end
+end, { expr = true })
 
 -- set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 -- set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
